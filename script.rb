@@ -46,8 +46,19 @@ class Player
   end
 
   def get_symbol
-    puts "Player #{self.player_number}, do you want to be \"X\" or \"O\"?"
-    @symbol = gets.chomp.upcase
+    begin
+      puts "Player #{self.player_number}, do you want to be \"X\" or \"O\"?"
+      @symbol = gets.chomp.upcase
+      if @symbol != "X" && @symbol != "O"
+        raise "ERROR: Incorrect input"
+      end
+    rescue => exception
+      puts "Incorrect input. Please try again with \"X\" or \"O\""
+      sleep 1
+      retry
+    else
+      @symbol
+    end
   end
 
   def player_move
