@@ -3,8 +3,10 @@
 class Board
 	attr_accessor :board_array
 
-	def initialize 
+	def initialize(player1, player2)
   	@board_array = Array.new(3) {Array.new(3) {nil}}
+    @player1 = player1
+    @player2 = player2
   end
 
   def show_board
@@ -20,9 +22,9 @@ class Board
   end
 
   def check_winner
-    if check_horizontal_winner(@board_array) == true
+    if check_horizontal_winner(@board_array, @player1, @player2) == true
       return true
-    elsif check_vertical_winner(@board_array) == true
+    elsif check_vertical_winner(@board_array, @player1, @player2) == true
       return true
     elsif check_diagonal_winner(@board_array) ==true
       return true
@@ -65,24 +67,36 @@ def get_new_move(player, board)
   board.show_board
 end
 
-def check_horizontal_winner(board)
+def check_horizontal_winner(board, p1, p2)
   for i in 0..2
     if board[i].all? {|element| element == "X"} ||
       board[i].all? {|element| element == "O"}
-      puts "WINNER!!!"
-      return true
+      if (board[i][0] == "X" && p1.symbol == "X") ||
+        (board[i][0] == "O" && p1.symbol == "O")
+        puts "PLAYER #{p1.player_number} WINS!!!"
+        return true
+      else
+        puts "PLAYER #{p2.player_number} WINS!!!"
+        return true
+      end
     else
       false
     end
   end
 end
 
-def check_vertical_winner(board)
+def check_vertical_winner(board, p1, p2)
   for n in 0..2
     if (board[0][n] == "X" && board[1][n] == "X" && board[2][n] == "X") ||
       (board[0][n] == "O" && board[1][n] == "O" && board[2][n] == "O")
-      puts "WINNER!!!"
-      return true
+      if (board[0][n] == "X" && p1.symbol == "X") ||
+        (board[0][n] == "O" && p1.symbol == "O")
+        puts "PLAYER #{p1.player_number} WINS!!!"
+        return true
+      else
+        puts "PLAYER #{p2.player_number} WINS!!!"
+        return true
+      end
     else
       false
     end
@@ -117,7 +131,7 @@ end
 sleep 1
 puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
 
-board = Board.new
+board = Board.new(player1, player2)
 sleep 1
 puts "Here's the starting board."
 board.show_board
@@ -146,4 +160,5 @@ until max_moves <= 0 || winner == true
   end
 end
 
+sleep 1
 puts "Game over"
