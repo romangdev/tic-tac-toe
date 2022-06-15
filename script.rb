@@ -1,3 +1,5 @@
+# Class for Tic Tac Toe board to show the board, place player choices, 
+# and check for winners.
 class Board
 	attr_accessor :board_array
 
@@ -28,12 +30,15 @@ class Board
   end
 end	
 
+# Class for tic tac toe players to get their order, chosen symbol, 
+# and their move location choice
 class Player
-  attr_reader :symbol, :player_number
+  attr_reader :player_number
+  attr_accessor :symbol
 
   def initialize(player_number)
     @player_number = player_number
-    @symbol = self.get_symbol
+    @symbol = nil
   end
 
   def get_symbol
@@ -96,9 +101,17 @@ def check_diagonal_winner(board)
   end
 end
 
+# Create the 2 players
 player1 = Player.new(1)
+player1.get_symbol
 puts "Player #{player1.player_number} is #{player1.symbol}"
+
 player2 = Player.new(2)
+if player1.symbol == "X"
+  player2.symbol = "O"
+else
+  player2.symbol = "X"
+end
 puts "Player #{player2.player_number} is #{player2.symbol}"
 
 board = Board.new
