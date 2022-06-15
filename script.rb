@@ -16,12 +16,14 @@ class Board
   end
 
   def check_winner
-    for i in 0..2
-      if @board_array[i].all? {|element| element == "X"} || 
-        @board_array[i].all? {|element| element == "O"}
-        puts "WINNER!!!"
-        return true
-      end
+    if check_horizontal_winner(@board_array) == true
+      return true
+    elsif check_vertical_winner(@board_array) == true
+      return true
+    elsif check_diagonal_winner(@board_array) ==true
+      return true
+    else
+      false
     end
   end
 end	
@@ -56,6 +58,44 @@ def get_new_move(player, board)
   board.show_board
 end
 
+def check_horizontal_winner(board)
+  for i in 0..2
+    if board[i].all? {|element| element == "X"} ||
+      board[i].all? {|element| element == "O"}
+      puts "WINNER!!!"
+      return true
+    else
+      false
+    end
+  end
+end
+
+def check_vertical_winner(board)
+  for n in 0..2
+    if (board[0][n] == "X" && board[1][n] == "X" && board[2][n] == "X") ||
+      (board[0][n] == "O" && board[1][n] == "O" && board[2][n] == "O")
+      puts "WINNER!!!"
+      return true
+    else
+      false
+    end
+  end
+end
+
+def check_diagonal_winner(board)
+  if (board[0][0] == "X" && board[1][1] == "X" && board[2][2] == "X") ||
+    (board[0][0] == "O" && board[1][1] == "O" && board[2][2] == "O")
+    puts "WINNER!!!"
+    return true
+  elsif (board[0][2] == "X" && board[1][1] == "X" && board[2][0] == "X") ||
+    (board[0][2] == "O" && board[1][1] == "O" && board[2][0] == "O")
+    puts "WINNER!!!"
+    return true
+  else
+    false
+  end
+end
+
 player1 = Player.new(1)
 puts "Player #{player1.player_number} is #{player1.symbol}"
 player2 = Player.new(2)
@@ -74,12 +114,19 @@ winner = false
 until max_moves <= 0 || winner == true
   get_new_move(player1, board)
   max_moves -= 1
-  board.check_winner
-  # winner = board.check_winner
+  if board.check_winner == true
+    winner = true
+    next
+  end
 
   if max_moves > 0
     get_new_move(player2, board)
     max_moves -= 1
-    board.check_winner
+    if board.check_winner == true
+      winner = true
+      next
+    end
   end
 end
+
+puts "Game over"
