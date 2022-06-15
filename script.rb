@@ -8,9 +8,11 @@ class Board
   end
 
   def show_board
+    puts "\n"
     for i in 0..2
       p @board_array[i]
     end
+    puts "\n"
   end
 
   def place_choice(player_location, current_player)
@@ -104,7 +106,7 @@ end
 # Create the 2 players
 player1 = Player.new(1)
 player1.get_symbol
-puts "Player #{player1.player_number} is #{player1.symbol}"
+puts "\nPlayer #{player1.player_number} is #{player1.symbol}"
 
 player2 = Player.new(2)
 if player1.symbol == "X"
@@ -112,12 +114,14 @@ if player1.symbol == "X"
 else
   player2.symbol = "X"
 end
-puts "Player #{player2.player_number} is #{player2.symbol}"
+sleep 1
+puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
 
 board = Board.new
-
+sleep 1
 puts "Here's the starting board."
 board.show_board
+sleep 1
 
 max_moves = 9
 winner = false
