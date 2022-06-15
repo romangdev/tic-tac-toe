@@ -11,8 +11,8 @@ class Board
     end
   end
 
-  def place_choice(player_location)
-    @board_array[player_location[0]][player_location[1]] = "X"
+  def place_choice(player_location, current_player)
+    @board_array[player_location[0]][player_location[1]] = current_player.symbol
   end
 end	
 
@@ -31,9 +31,9 @@ class Player
 
   def player_move
     arr = []
-    puts "What ROW do you want to place your \"#{@symbol}\"?"
+    puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
     row = gets.chomp.to_i - 1
-    puts "What COLUMN do you want to place your \"#{@symbol}\"?"
+    puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
     column = gets.chomp.to_i - 1
     arr << row << column
     arr
@@ -45,11 +45,24 @@ puts "Player #{player1.player_number} is #{player1.symbol}"
 player2 = Player.new(2)
 puts "Player #{player2.player_number} is #{player2.symbol}"
 
-puts "Here's a look at the starting board."
 board = Board.new
+
+puts "Here's the starting board."
 board.show_board
 
-location = player1.player_move
-board.place_choice(location)
+max_moves = 9
+winner = false
 
-board.show_board
+until max_moves <= 0 || winner == true
+  location = player1.player_move
+  board.place_choice(location, player1)
+  board.show_board
+  max_moves -= 1
+
+  if max_moves > 0
+    location = player2.player_move
+    board.place_choice(location, player2)
+    board.show_board
+    max_moves -= 1
+  end
+end
