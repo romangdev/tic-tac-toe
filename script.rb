@@ -14,6 +14,16 @@ class Board
   def place_choice(player_location, current_player)
     @board_array[player_location[0]][player_location[1]] = current_player.symbol
   end
+
+  def check_winner
+    for i in 0..2
+      if @board_array[i].all? {|element| element == "X"} || 
+        @board_array[i].all? {|element| element == "O"}
+        puts "WINNER!!!"
+        return true
+      end
+    end
+  end
 end	
 
 class Player
@@ -40,6 +50,12 @@ class Player
   end
 end
 
+def get_new_move(player, board)
+  location = player.player_move
+  board.place_choice(location, player)
+  board.show_board
+end
+
 player1 = Player.new(1)
 puts "Player #{player1.player_number} is #{player1.symbol}"
 player2 = Player.new(2)
@@ -53,16 +69,17 @@ board.show_board
 max_moves = 9
 winner = false
 
+# play game and allow a maximum of 9 moves total between both players
+# or stop game once winner has been declared
 until max_moves <= 0 || winner == true
-  location = player1.player_move
-  board.place_choice(location, player1)
-  board.show_board
+  get_new_move(player1, board)
   max_moves -= 1
+  board.check_winner
+  # winner = board.check_winner
 
   if max_moves > 0
-    location = player2.player_move
-    board.place_choice(location, player2)
-    board.show_board
+    get_new_move(player2, board)
     max_moves -= 1
+    board.check_winner
   end
 end
