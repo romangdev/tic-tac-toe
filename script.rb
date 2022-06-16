@@ -70,9 +70,10 @@ class Player
         raise "ERROR: Incorrect input"
       end
     rescue => exception
-      puts "Incorrect input. Please try again!"
+      puts "\nIncorrect input. Please try again!"
       retry
     else 
+      puts "\nGot it!"
       row
     end
 
@@ -83,12 +84,14 @@ class Player
         raise "ERROR: Incorrect input"
       end
     rescue => exception
-      puts "Incorrect input. Please try again!"
+      puts "\nIncorrect input. Please try again!"
       retry
     else
+      puts "\nGot it!\nAn #{@symbol} in position R#{row + 1}, C#{column + 1}"
       column
+      sleep 1
     end
-    
+
     arr << row << column
     arr
   end
