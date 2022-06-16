@@ -61,44 +61,60 @@ class Player
     end
   end
 
-  def player_move
+  # Find out from player where they want to place their symbol on the board
+  def player_move(board)
     arr = []
     begin
-      puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
-      row = gets.chomp.to_i - 1
-      if !(row.between?(0, 2))
-        raise "ERROR: Incorrect input"
+      begin
+        puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
+        row = gets.chomp.to_i - 1
+        if !(row.between?(0, 2))
+          raise "ERROR: Incorrect input"
+        end
+      rescue => exception
+        puts "\nIncorrect input. Please try again!"
+        retry
+      else 
+        puts "\nGot it!"
+        row
       end
-    rescue => exception
-      puts "\nIncorrect input. Please try again!"
-      retry
-    else 
-      puts "\nGot it!"
-      row
-    end
 
-    begin 
-      puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
-      column = gets.chomp.to_i - 1
-      if !(column.between?(0, 2))
-        raise "ERROR: Incorrect input"
+      begin 
+        puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
+        column = gets.chomp.to_i - 1
+        if !(column.between?(0, 2))
+          raise "ERROR: Incorrect input"
+        end
+      rescue => exception
+        puts "\nIncorrect input. Please try again!"
+        retry
+      else
+        puts "\nGot it!\n"
+        column
+        sleep 1
       end
+      
+      if board[row][column] != nil
+        raise "ERROR: Location already filled"
+      else 
+        board[row][column]
+      end
+    
     rescue => exception
-      puts "\nIncorrect input. Please try again!"
+      puts "\nWAIT! That location is already filled. Please try again!\n\n"
+      sleep 1
       retry
     else
-      puts "\nGot it!\nAn #{@symbol} in position R#{row + 1}, C#{column + 1}"
-      column
-      sleep 1
+      puts "An #{@symbol} in position R#{row + 1}, C#{column + 1}"
+      arr << row << column
+      arr
     end
-
-    arr << row << column
-    arr
   end
 end
 
+# get the player's desired placement location and put it on the board
 def get_new_move(player, board)
-  location = player.player_move
+  location = player.player_move(board.board_array)
   board.place_choice(location, player)
   board.show_board
 end
