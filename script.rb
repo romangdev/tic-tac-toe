@@ -63,10 +63,32 @@ class Player
 
   def player_move
     arr = []
-    puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
-    row = gets.chomp.to_i - 1
-    puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
-    column = gets.chomp.to_i - 1
+    begin
+      puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
+      row = gets.chomp.to_i - 1
+      if !(row.between?(0, 2))
+        raise "ERROR: Incorrect input"
+      end
+    rescue => exception
+      puts "Incorrect input. Please try again!"
+      retry
+    else 
+      row
+    end
+
+    begin 
+      puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
+      column = gets.chomp.to_i - 1
+      if !(column.between?(0, 2))
+        raise "ERROR: Incorrect input"
+      end
+    rescue => exception
+      puts "Incorrect input. Please try again!"
+      retry
+    else
+      column
+    end
+    
     arr << row << column
     arr
   end
