@@ -1,10 +1,10 @@
-# Class for Tic Tac Toe board to show the board, place player choices, 
+# Class for Tic Tac Toe board to show the board, place player choices,
 # and check for winners.
 class Board
-	attr_accessor :board_array
+  attr_accessor :board_array
 
-	def initialize(player1, player2)
-  	@board_array = Array.new(3) {Array.new(3) {nil}}
+  def initialize(player1, player2)
+    @board_array = Array.new(3) { Array.new(3) { nil } }
     @player1 = player1
     @player2 = player2
   end
@@ -23,18 +23,16 @@ class Board
 
   def check_winner
     if check_horizontal_winner(@board_array, @player1, @player2) == true
-      return true
+      true
     elsif check_vertical_winner(@board_array, @player1, @player2) == true
-      return true
-    elsif check_diagonal_winner(@board_array, @player1, @player2) ==true
-      return true
+      true
     else
-      false
+      check_diagonal_winner(@board_array, @player1, @player2) == true
     end
   end
-end	
+end
 
-# Class for tic tac toe players to get their order, chosen symbol, 
+# Class for tic tac toe players to get their order, chosen symbol,
 # and their move location choice
 class Player
   attr_reader :player_number
@@ -46,46 +44,39 @@ class Player
   end
 
   def get_symbol
-    begin
-      puts "Player #{self.player_number}, do you want to be \"X\" or \"O\"?"
-      @symbol = gets.chomp.upcase
-      if @symbol != "X" && @symbol != "O"
-        raise "ERROR: Incorrect input"
-      end
-    rescue => exception
-      puts "Incorrect input. Please try again with \"X\" or \"O\""
-      sleep 1
-      retry
-    else
-      @symbol
-    end
+    puts "Player #{player_number}, do you want to be \"X\" or \"O\"?"
+    @symbol = gets.chomp.upcase
+    raise 'ERROR: Incorrect input' if @symbol != 'X' && @symbol != 'O'
+  rescue StandardError 
+    puts 'Incorrect input. Please try again with "X" or "O"'
+    sleep 1
+    retry
+  else
+    @symbol
   end
 
   # Find out from player where they want to place their symbol on the board
+  # Handle positions chosen outside of board contraints, are alraedy chosen positions
   def player_move(board)
     arr = []
     begin
       begin
         puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
         row = gets.chomp.to_i - 1
-        if !(row.between?(0, 2))
-          raise "ERROR: Incorrect input"
-        end
-      rescue => exception
+        raise 'ERROR: Incorrect input' unless row.between?(0, 2)
+      rescue StandardError
         puts "\nIncorrect input. Please try again!"
         retry
-      else 
+      else
         puts "\nGot it!"
         row
       end
 
-      begin 
+      begin
         puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
         column = gets.chomp.to_i - 1
-        if !(column.between?(0, 2))
-          raise "ERROR: Incorrect input"
-        end
-      rescue => exception
+        raise 'ERROR: Incorrect input' unless column.between?(0, 2)
+      rescue StandardError
         puts "\nIncorrect input. Please try again!"
         retry
       else
@@ -93,14 +84,13 @@ class Player
         column
         sleep 1
       end
-      
-      if board[row][column] != nil
-        raise "ERROR: Location already filled"
-      else 
+
+      if !board[row][column].nil?
+        raise 'ERROR: Location already filled'
+      else
         board[row][column]
       end
-    
-    rescue => exception
+    rescue StandardError
       puts "\nWAIT! That location is already filled. Please try again!\n\n"
       sleep 1
       retry
@@ -121,10 +111,10 @@ end
 
 def check_horizontal_winner(board, p1, p2)
   for i in 0..2
-    if board[i].all? {|element| element == "X"} ||
-      board[i].all? {|element| element == "O"}
-      if (board[i][0] == "X" && p1.symbol == "X") ||
-        (board[i][0] == "O" && p1.symbol == "O")
+    if board[i].all? { |element| element == 'X' } ||
+       board[i].all? { |element| element == 'O' }
+      if (board[i][0] == 'X' && p1.symbol == 'X') ||
+         (board[i][0] == 'O' && p1.symbol == 'O')
         puts "PLAYER #{p1.player_number} WINS!!!"
         return true
       else
@@ -139,10 +129,10 @@ end
 
 def check_vertical_winner(board, p1, p2)
   for n in 0..2
-    if (board[0][n] == "X" && board[1][n] == "X" && board[2][n] == "X") ||
-      (board[0][n] == "O" && board[1][n] == "O" && board[2][n] == "O")
-      if (board[0][n] == "X" && p1.symbol == "X") ||
-        (board[0][n] == "O" && p1.symbol == "O")
+    if (board[0][n] == 'X' && board[1][n] == 'X' && board[2][n] == 'X') ||
+       (board[0][n] == 'O' && board[1][n] == 'O' && board[2][n] == 'O')
+      if (board[0][n] == 'X' && p1.symbol == 'X') ||
+         (board[0][n] == 'O' && p1.symbol == 'O')
         puts "PLAYER #{p1.player_number} WINS!!!"
         return true
       else
@@ -156,25 +146,25 @@ def check_vertical_winner(board, p1, p2)
 end
 
 def check_diagonal_winner(board, p1, p2)
-  if (board[0][0] == "X" && board[1][1] == "X" && board[2][2] == "X") ||
-    (board[0][0] == "O" && board[1][1] == "O" && board[2][2] == "O")
-    if (board[0][0] == "X" && p1.symbol == "X") ||
-      (board[0][0] == "O" && p1.symbol == "O")
+  if (board[0][0] == 'X' && board[1][1] == 'X' && board[2][2] == 'X') ||
+     (board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O')
+    if (board[0][0] == 'X' && p1.symbol == 'X') ||
+       (board[0][0] == 'O' && p1.symbol == 'O')
       puts "PLAYER #{p1.player_number} WINS!!!"
-      return true
+      true
     else
       puts "PLAYER #{p2.player_number} WINS!!!"
-      return true
+      true
     end
-  elsif (board[0][2] == "X" && board[1][1] == "X" && board[2][0] == "X") ||
-    (board[0][2] == "O" && board[1][1] == "O" && board[2][0] == "O")
-    if (board[0][2] == "X" && p1.symbol == "X") ||
-      (board[0][2] == "O" && p1.symbol == "O")
+  elsif (board[0][2] == 'X' && board[1][1] == 'X' && board[2][0] == 'X') ||
+        (board[0][2] == 'O' && board[1][1] == 'O' && board[2][0] == 'O')
+    if (board[0][2] == 'X' && p1.symbol == 'X') ||
+       (board[0][2] == 'O' && p1.symbol == 'O')
       puts "PLAYER #{p1.player_number} WINS!!!"
-      return true
+      true
     else
       puts "PLAYER #{p2.player_number} WINS!!!"
-      return true
+      true
     end
   else
     false
@@ -187,11 +177,11 @@ player1.get_symbol
 puts "\nPlayer #{player1.player_number} is #{player1.symbol}"
 
 player2 = Player.new(2)
-if player1.symbol == "X"
-  player2.symbol = "O"
-else
-  player2.symbol = "X"
-end
+player2.symbol = if player1.symbol == 'X'
+                   'O'
+                 else
+                   'X'
+                 end
 sleep 1
 puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
 
@@ -214,15 +204,15 @@ until max_moves <= 0 || winner == true
     next
   end
 
-  if max_moves > 0
-    get_new_move(player2, board)
-    max_moves -= 1
-    if board.check_winner == true
-      winner = true
-      next
-    end
+  next unless max_moves > 0
+
+  get_new_move(player2, board)
+  max_moves -= 1
+  if board.check_winner == true
+    winner = true
+    next
   end
 end
 
 sleep 1
-puts "Game over"
+puts 'Game over'
