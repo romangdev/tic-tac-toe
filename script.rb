@@ -9,6 +9,7 @@ class Board
     @player2 = player2
   end
 
+  # display the current state of the board
   def show_board
     puts "\n"
     for i in 0..2
@@ -17,9 +18,23 @@ class Board
     puts "\n"
   end
 
+  # fill the player's choice position with their symbol
   def place_choice(player_location, current_player)
     @board_array[player_location[0]][player_location[1]] = current_player.symbol
   end
+
+  # check if someone won the game
+  def check_winner
+    if check_horizontal_winner(@board_array, @player1, @player2) == true
+      true
+    elsif check_vertical_winner(@board_array, @player1, @player2) == true
+      true
+    else
+      check_diagonal_winner(@board_array, @player1, @player2) == true
+    end
+  end
+
+  private
 
   def check_horizontal_winner(board, p1, p2)
     for i in 0..2
@@ -83,15 +98,6 @@ class Board
     end
   end
 
-  def check_winner
-    if check_horizontal_winner(@board_array, @player1, @player2) == true
-      true
-    elsif check_vertical_winner(@board_array, @player1, @player2) == true
-      true
-    else
-      check_diagonal_winner(@board_array, @player1, @player2) == true
-    end
-  end
 end
 
 # Class for tic tac toe players to get their order, chosen symbol,
@@ -105,6 +111,7 @@ class Player
     @symbol = nil
   end
 
+  # get the symbol player 1 wants to play with
   def get_symbol
     puts "Player #{player_number}, do you want to be \"X\" or \"O\"?"
     @symbol = gets.chomp.upcase
@@ -117,21 +124,49 @@ class Player
     @symbol
   end
 
+  # fill the player's position on the board with their symbol
+  def fill_player_position(row, column)
+    puts "An #{@symbol} in position R#{row + 1}, C#{column + 1}"
+    arr = []
+    arr << row << column
+    arr
+  end
 
-  def get_player_row
+  # Find out from player where they want to place their symbol on the board
+  # Handle positions chosen outside of board contraints, are alraedy chosen positions
+  def player_move(board)
     begin
-      puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
-      row = gets.chomp.to_i - 1
-      raise 'ERROR: Incorrect input' unless row.between?(0, 2)
+      row = get_player_row
+      column = get_player_column
+      check_location_validity(board, row, column)
     rescue StandardError
-      puts "\nIncorrect input. Please try again!"
+      puts "\nWAIT! That location is already filled. Please try again!\n\n"
+      sleep 1
       retry
     else
-      puts "\nGot it!"
-      row
+      fill_player_position(row, column)
     end
   end
 
+  # get the player's desired placement location and put it on the board
+  def get_new_move(player, board)
+    location = player.player_move(board.board_array)
+    board.place_choice(location, player)
+    board.show_board
+  end
+
+  private 
+
+  # raise error to be rescued if player chooses position already chosen previously
+  def check_location_validity(board, row, column)
+    if !board[row][column].nil?
+      raise 'ERROR: Location already filled'
+    else
+      board[row][column]
+    end
+  end
+
+  # get column position from player
   def get_player_column
     begin
       puts "Player #{@player_number} - What COLUMN do you want to place your \"#{@symbol}\"?"
@@ -147,54 +182,48 @@ class Player
     end
   end
 
-  def check_location_validity(board, row, column)
-    if !board[row][column].nil?
-      raise 'ERROR: Location already filled'
-    else
-      board[row][column]
-    end
-  end
-
-  # Find out from player where they want to place their symbol on the board
-  # Handle positions chosen outside of board contraints, are alraedy chosen positions
-  def player_move(board)
+  # get row position from player
+  def get_player_row
     begin
-      row = get_player_row
-      column = get_player_column
-      check_location_validity(board, row, column)
+      puts "Player #{@player_number} - What ROW do you want to place your \"#{@symbol}\"?"
+      row = gets.chomp.to_i - 1
+      raise 'ERROR: Incorrect input' unless row.between?(0, 2)
     rescue StandardError
-      puts "\nWAIT! That location is already filled. Please try again!\n\n"
-      sleep 1
+      puts "\nIncorrect input. Please try again!"
       retry
     else
-      puts "An #{@symbol} in position R#{row + 1}, C#{column + 1}"
-      arr = []
-      arr << row << column
-      arr
+      puts "\nGot it!"
+      row
     end
-  end
-
-  # get the player's desired placement location and put it on the board
-  def get_new_move(player, board)
-    location = player.player_move(board.board_array)
-    board.place_choice(location, player)
-    board.show_board
   end
 end
 
-# Create the 2 players
-player1 = Player.new(1)
-player1.get_symbol
-puts "\nPlayer #{player1.player_number} is #{player1.symbol}"
+class Game
+  def create_player1
+    player1 = Player.new(1)
+    player1.get_symbol
+    puts "\nPlayer #{player1.player_number} is #{player1.symbol}"
+    player1
+  end
 
-player2 = Player.new(2)
-player2.symbol = if player1.symbol == 'X'
-                   'O'
-                 else
-                   'X'
-                 end
-sleep 1
-puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
+  def create_player2(player1)
+    player2 = Player.new(2)
+    player2.symbol = if player1.symbol == 'X'
+                      'O'
+                    else
+                      'X'
+                    end
+    sleep 1
+    puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
+    player2
+  end
+end
+
+game = Game.new
+
+# Create the 2 players
+player1 = game.create_player1
+player2 = game.create_player2(player1)
 
 board = Board.new(player1, player2)
 sleep 1
