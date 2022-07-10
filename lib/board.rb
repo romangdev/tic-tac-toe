@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+#frozen_string_literal: false
 
 require_relative "player"
 
@@ -29,7 +29,7 @@ class Board
 
   # check if someone won the game
   def check_winner
-    if check_horizontal_winner(@board_array, @player1, @player2) == true
+    if check_horizontal_winner == true
       true
     elsif check_vertical_winner(@board_array, @player1, @player2) == true
       true
@@ -40,16 +40,16 @@ class Board
 
   private
 
-  def check_horizontal_winner(board, p1, p2)
+  def check_horizontal_winner
     for i in 0..2
-      if board[i].all? { |element| element == 'X' } ||
-         board[i].all? { |element| element == 'O' }
-        if (board[i][0] == 'X' && p1.symbol == 'X') ||
-           (board[i][0] == 'O' && p1.symbol == 'O')
-          puts "PLAYER #{p1.player_number} WINS!!!"
+      if @board_array[i].all? { |element| element == 'X' } ||
+         @board_array[i].all? { |element| element == 'O' }
+        if (@board_array[i][0] == 'X' && @player1.symbol == 'X') ||
+           (@board_array[i][0] == 'O' && @player1.symbol == 'O')
+          puts "PLAYER #{@player1.player_number} WINS!!!"
           return true
         else
-          puts "PLAYER #{p2.player_number} WINS!!!"
+          puts "PLAYER #{@player2.player_number} WINS!!!"
           return true
         end
       else
