@@ -25,6 +25,7 @@ class Board
   # fill the player's choice position with their symbol
   def place_choice(player_location, current_player)
     @board_array[player_location[0]][player_location[1]] = current_player.symbol
+    @board_array
   end
 
   # check if someone won the game

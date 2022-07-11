@@ -13,6 +13,21 @@ class Player
     @symbol = nil
   end
 
+  def get_player1_symbol(player1)
+    player1.get_symbol
+    puts "\nPlayer #{player1.player_number} is #{player1.symbol}"
+  end
+
+  def get_player2_symbol(player1, player2)
+    player2.symbol = if player1.symbol == 'X'
+                                          'O'
+                                        else
+                                          'X'
+                                        end
+    sleep 1
+    puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
+  end
+
   # get the symbol player 1 wants to play with
   def get_symbol
     puts "Player #{player_number}, do you want to be \"X\" or \"O\"?"

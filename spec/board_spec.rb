@@ -55,4 +55,8 @@ describe Board do
       end
     end
   end
+
+  # describe "#place_choice" do 
+  #   expect(board.place_choice([]))
+  # end
 end

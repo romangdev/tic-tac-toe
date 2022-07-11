@@ -6,20 +6,11 @@ require_relative "player"
 class Game
   def create_player1
     player1 = Player.new(1)
-    player1.get_symbol
-    puts "\nPlayer #{player1.player_number} is #{player1.symbol}"
     player1
   end
 
   def create_player2(player1)
     player2 = Player.new(2)
-    player2.symbol = if player1.symbol == 'X'
-                      'O'
-                    else
-                      'X'
-                    end
-    sleep 1
-    puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
     player2
   end
 
