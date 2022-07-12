@@ -55,16 +55,4 @@ describe Board do
       end
     end
   end
-
-  describe "#place_choice" do 
-    before do
-      board.instance_variable_set(:@board_array, [["nil", "X", "nil"], ["nil", "nil", "nil"], ["nil", "nil", "nil"]])
-      puts :@board_array
-      puts "hi"
-    end
-    it do 
-      # board.place_choice([0, 1], player1)
-      # expect(@board_array.to_a).to eql([["nil", "X", "nil"], ["nil", "nil", "nil"], ["nil", "nil", "nil"]])
-    end
-  end
 end
