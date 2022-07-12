@@ -1,7 +1,9 @@
 require "player.rb"
+require "board.rb"
 
 describe Player do
   subject(:player) { described_class.new(1) }
+  let(:board) { instance_double(Board) }
 
   describe "#get_symbol" do 
     context "when the player enters \"X\" as their symbol, return symbol" do
@@ -21,24 +23,6 @@ describe Player do
         expect(player.get_symbol).to eql("O")
       end
     end
-
-    # make sub method out of lines that raise error and assign it
-    # check to ensure people are reprompted to enter for this one?
-    # context "when player enters non-X or non-O as their symbol, raise an error" do
-    #   before do 
-    #     allow(player).to receive(:gets).and_return(56)
-    #   end
-    #   error_msg = 'Incorrect input. Please try again with "X" or "O"'
-    #   it "raises an error" do
-    #     # expect(player).to receive(:puts).with("Player 1, do you want to be \"X\" or \"O\"?")
-    #     expect(player).to receive(:puts).and_return('Incorrect input. Please try again with "X" or "O"')
-    #     player.get_symbol
-    #   end
-
-      # before do 
-      #   allow(player).to receive(:gets).and_return("kjaKD  j")
-      # end
-    # end
   end
 
   describe "#fill_player_position" do
