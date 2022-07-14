@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 require"board.rb"
 
@@ -52,6 +52,30 @@ describe Board do
       it "returns false" do
         expect(board.check_winner).to eql(false)
         board.check_winner
+      end
+    end
+  end
+
+  describe "#place_choice" do 
+    let(:current_player) { double("current_player", symbol: "X") }
+
+    context "when given a player_location and symbol 'X'" do 
+      it "places \"X\" in [1. 2] and returns array" do 
+        expect { board.place_choice([1, 2], current_player) }.to change { board.board_array[1][2] }.from(nil).to("X")
+      end
+
+      it "places \"X\" in [2, 0] and returns array" do 
+        expect { board.place_choice([2, 0], current_player) }.to change { board.board_array[2][0] }.from(nil).to("X")
+      end
+    end
+
+    context "when given player_location and symbol 'Y'" do 
+      it "places \"Y\" in [0. 0] and returns array" do 
+        expect { board.place_choice([0, 0], current_player) }.to change { board.board_array[0][0] }.from(nil).to("X")
+      end
+
+      it "places \"Y\" in [1, 1] and returns array" do 
+        expect { board.place_choice([1, 1], current_player) }.to change { board.board_array[1][1] }.from(nil).to("X")
       end
     end
   end
