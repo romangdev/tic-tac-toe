@@ -19,11 +19,12 @@ class Player
   end
 
   def get_player2_symbol(player1, player2)
-    player2.symbol = if player1.symbol == 'X'
-                                          'O'
-                                        else
-                                          'X'
-                                        end
+    if player1.symbol == 'X'
+      player2.symbol = 'O' 
+    else
+      player2.symbol = 'X'
+    end
+
     sleep 1
     puts "Player #{player2.player_number} is #{player2.symbol}\n\n"
   end
