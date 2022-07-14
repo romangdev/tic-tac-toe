@@ -21,20 +21,21 @@ describe Player do
     end
   end
 
-  # describe "#get_player2_symbol" do 
-  #   context "when player1 symbol is 'X'" do 
-  #     let(:player1) { double("player1", symbol: "X") }
-  #     let(:player2) { double("player2", symbol: nil) }
+  describe "#get_player2_symbol" do 
+    context "when player1 symbol is 'X'" do 
+      let(:player1) { double("player1", symbol: "X") }
+      let(:player2) { double("player2", symbol: nil) }
 
-  #     before do 
-  #       allow(player2).to receive(:symbol)
-  #     end
-  #     it "sets player2 symbol to 'O'" do 
-  #       expect(player2).to receive(:symbol).with("O")
-  #       player.get_player2_symbol(player1, player2)
-  #     end
-  #   end
-  # end
+      before do 
+        allow(player2).to receive(:symbol)
+        allow(player2).to receive(:player_number)
+      end
+      it "sets player2 symbol to 'O'" do 
+        expect(player2).to receive(:symbol=).with("O")
+        player.get_player2_symbol(player1, player2)
+      end
+    end
+  end
 
   describe "#get_symbol" do 
     context "when the player enters \"X\" as their symbol, return symbol" do
